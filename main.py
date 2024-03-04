@@ -1,6 +1,26 @@
 from tkinter import *
 from tkinter import ttk
 
+
+def calculate(*args):
+    house_seperation = 16
+
+    try:
+        lot_width_calc = int(lot_width.get())
+        lot_length_calc = int(lot_length.get())
+        floor_area_calc = int(floor_area.get()) # Not used?
+
+        frontage = lot_width_calc
+        lot_area = lot_width_calc * lot_length_calc
+        gfa_setback.set(lot_area - (house_seperation * lot_width_calc) - (frontage * 10.7))
+        gfa_site_coverage.set(lot_area * 0.5)
+        gfa_186sqm.set(2002)
+        gfa_25percent.set(lot_area * 0.25)
+
+    except ValueError:
+        pass
+
+
 window = Tk()
 window.title("Laneway Coverage Calculator")
 
@@ -23,6 +43,20 @@ ttk.Label(mainframe, text="Ft").grid(column=3, row=1, sticky=(W, E))
 ttk.Label(mainframe, text="Ft").grid(column=3, row=2, sticky=(W, E))
 ttk.Label(mainframe, text="Ft²").grid(column=3, row=3, sticky=(W, E))
 
+gfa_setback = StringVar()
+ttk.Label(mainframe, textvariable=gfa_setback).grid(column=1, row=5, sticky=(W, E))
+
+gfa_site_coverage = StringVar()
+ttk.Label(mainframe, textvariable=gfa_site_coverage).grid(
+    column=1, row=6, sticky=(W, E)
+)
+
+gfa_186sqm = StringVar()
+ttk.Label(mainframe, textvariable=gfa_186sqm).grid(column=1, row=7, sticky=(W, E))
+
+gfa_25percent = StringVar()
+ttk.Label(mainframe, textvariable=gfa_25percent).grid(column=1, row=8, sticky=(W, E))
+
 # ----------------------------------------------------------------
 
 # Entry
@@ -42,7 +76,9 @@ floor_area_entry.grid(column=2, row=3, sticky=(W, E))
 
 # ----------------------------------------------------------------
 
-ttk.Button(mainframe, text="Calculate").grid(column=2, row=4, sticky=(W, E))
+ttk.Button(mainframe, text="Calculate", command=calculate).grid(
+    column=2, row=4, sticky=(W, E)
+)
 
 
 def calculate_gfa_criteria(
