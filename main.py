@@ -8,14 +8,26 @@ def calculate(*args):
     try:
         lot_width_calc = int(lot_width.get())
         lot_length_calc = int(lot_length.get())
-        floor_area_calc = int(floor_area.get()) # Not used?
+        floor_area_calc = int(floor_area.get())  # Not used?
 
         frontage = lot_width_calc
         lot_area = lot_width_calc * lot_length_calc
-        gfa_setback.set(lot_area - (house_seperation * lot_width_calc) - (frontage * 10.7))
-        gfa_site_coverage.set(lot_area * 0.5)
-        gfa_186sqm.set(2002)
-        gfa_25percent.set(lot_area * 0.25)
+
+        gfa_setback_label.set("Setbacks: ")
+        gfa_site_coverage_label.set("Site Coverage: ")
+        gfa_186sqm_label.set("186m² GFA: ")
+        gfa_25percent_label.set("25% GFA: ")
+
+        gfa_setback.set(
+            format(
+                (lot_area - (house_seperation * lot_width_calc) - (frontage * 10.7)),
+                ".1f",
+            )
+            + " Ft²"
+        )
+        gfa_site_coverage.set(str(lot_area * 0.5) + " Ft²")
+        gfa_186sqm.set(str(2002) + " Ft²")
+        gfa_25percent.set(str(lot_area * 0.25) + " Ft²")
 
     except ValueError:
         pass
@@ -36,26 +48,44 @@ ttk.Label(mainframe, text="Enter lot width/site frontage:").grid(
     column=1, row=1, sticky=(W, E)
 )
 ttk.Label(mainframe, text="Enter lot length:").grid(column=1, row=2, sticky=(W, E))
-ttk.Label(mainframe, text="Enter the floor area of existing structures:").grid(
+ttk.Label(mainframe, text="Enter existing structure floor area:").grid(
     column=1, row=3, sticky=(W, E)
 )
 ttk.Label(mainframe, text="Ft").grid(column=3, row=1, sticky=(W, E))
 ttk.Label(mainframe, text="Ft").grid(column=3, row=2, sticky=(W, E))
 ttk.Label(mainframe, text="Ft²").grid(column=3, row=3, sticky=(W, E))
 
-gfa_setback = StringVar()
-ttk.Label(mainframe, textvariable=gfa_setback).grid(column=1, row=5, sticky=(W, E))
+gfa_setback_label = StringVar()
+ttk.Label(mainframe, textvariable=gfa_setback_label).grid(
+    column=1, row=5, sticky=(W, E)
+)
 
-gfa_site_coverage = StringVar()
-ttk.Label(mainframe, textvariable=gfa_site_coverage).grid(
+gfa_setback = StringVar()
+ttk.Label(mainframe, textvariable=gfa_setback).grid(column=2, row=5, sticky=(W, E))
+
+gfa_site_coverage_label = StringVar()
+ttk.Label(mainframe, textvariable=gfa_site_coverage_label).grid(
     column=1, row=6, sticky=(W, E)
 )
 
+gfa_site_coverage = StringVar()
+ttk.Label(mainframe, textvariable=gfa_site_coverage).grid(
+    column=2, row=6, sticky=(W, E)
+)
+
+gfa_186sqm_label = StringVar()
+ttk.Label(mainframe, textvariable=gfa_186sqm_label).grid(column=1, row=7, sticky=(W, E))
+
 gfa_186sqm = StringVar()
-ttk.Label(mainframe, textvariable=gfa_186sqm).grid(column=1, row=7, sticky=(W, E))
+ttk.Label(mainframe, textvariable=gfa_186sqm).grid(column=2, row=7, sticky=(W, E))
+
+gfa_25percent_label = StringVar()
+ttk.Label(mainframe, textvariable=gfa_25percent_label).grid(
+    column=1, row=8, sticky=(W, E)
+)
 
 gfa_25percent = StringVar()
-ttk.Label(mainframe, textvariable=gfa_25percent).grid(column=1, row=8, sticky=(W, E))
+ttk.Label(mainframe, textvariable=gfa_25percent).grid(column=2, row=8, sticky=(W, E))
 
 # ----------------------------------------------------------------
 
