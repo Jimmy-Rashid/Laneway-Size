@@ -2,7 +2,7 @@ from tkinter import *
 from tkinter import ttk
 
 
-def calculate(event):
+def calculate(event=None):
     house_seperation = 16
 
     try:
@@ -18,28 +18,53 @@ def calculate(event):
         gfa_186sqm_label.set("186m² GFA: ")
         gfa_25percent_label.set("25% GFA: ")
 
-        gfa_setback.set(
+        gfa_setback_value = float(
             format(
                 (lot_area - (house_seperation * lot_width_calc) - (frontage * 10.7)),
                 ".2f",
             )
-            + " Ft²"
         )
-        gfa_site_coverage.set(format((lot_area * 0.5), ".2f") + " Ft²")
+        gfa_setback.set(str(gfa_setback_value) + " Ft²")
+
+        gfa_site_coverage_value = float(format((lot_area * 0.5), ".2f"))
+        gfa_site_coverage.set(str(gfa_site_coverage_value) + " Ft²")
+
+        gfa_186sqm_value = float(2002)
         gfa_186sqm.set(str(2002) + " Ft²")
-        gfa_25percent.set(format((lot_area * 0.25), ".2f") + " Ft²")
-        
+
+        gfa_25percent_value = float(format((lot_area * 0.25), ".2f"))
+        gfa_25percent.set(str(gfa_25percent_value) + " Ft²")
+
         gfa_values = {
-            "Setbacks": str(gfa_setback.get()),
-            "Site Coverage": str(gfa_site_coverage.get()),
-            "186m² GFA": str(gfa_186sqm.get()),
-            "25% GFA": str(gfa_25percent.get()),
+            "Setbacks": gfa_setback_value,
+            "Site Coverage": gfa_site_coverage_value,
+            "186m² GFA": gfa_186sqm_value,
+            "25% GFA": gfa_25percent_value,
         }
         limiting_criterion = min(gfa_values, key=gfa_values.get)
         limiting_gfa = str(gfa_values[limiting_criterion])
-        gfa_results.set("\nThe limiting factor for GFA is the " + limiting_criterion + " criterion,\n which allows for a maximum of " + str(limiting_gfa) + " sqft.")
+        gfa_results.set(
+            "\nThe limiting factor for GFA is the "
+            + limiting_criterion
+            + " criterion,\n which allows for a maximum of "
+            + str(limiting_gfa)
+            + " sqft."
+        )
+
+        print(min(gfa_values, key=gfa_values.get))
 
     except ValueError:
+        gfa_setback_label.set("")
+        gfa_site_coverage_label.set("")
+        gfa_186sqm_label.set("")
+        gfa_25percent_label.set("")
+
+        gfa_setback.set("")
+        gfa_site_coverage.set("")
+        gfa_186sqm.set("")
+        gfa_25percent.set("")
+
+        gfa_results.set("Check your numbers")
         pass
 
 
@@ -98,7 +123,9 @@ gfa_25percent = StringVar()
 ttk.Label(mainframe, textvariable=gfa_25percent).grid(column=2, row=8, sticky=(W, E))
 
 gfa_results = StringVar()
-ttk.Label(mainframe, textvariable=gfa_results).grid(column=1, row=10, columnspan=2, sticky=(W, E))
+ttk.Label(mainframe, textvariable=gfa_results).grid(
+    column=1, row=10, columnspan=2, sticky=(W, E)
+)
 
 # ----------------------------------------------------------------
 
