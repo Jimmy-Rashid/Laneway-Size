@@ -6,9 +6,9 @@ def calculate():
     house_seperation = 16
 
     try:
-        lot_width_calc = int(lot_width.get())
-        lot_length_calc = int(lot_length.get())
-        floor_area_calc = int(floor_area.get())  # Not used?
+        lot_width_calc = float(lot_width.get())
+        lot_length_calc = float(lot_length.get())
+        floor_area_calc = float(floor_area.get())  # Not used?
 
         frontage = lot_width_calc
         lot_area = lot_width_calc * lot_length_calc
@@ -123,100 +123,9 @@ ttk.Button(mainframe, text="Calculate", command=calculate).grid(
     column=2, row=4, sticky=(W, E)
 )
 
-
-def calculate_gfa_criteria(
-    lot_width_ft, lot_length_ft, existing_floor_area_sqft, main_house_separation_ft=16
-):
-    """
-    Calculate the GFA under each criterion and determine the limiting factor.
-
-    Parameters:
-    - lot_width_ft: Width of the lot in feet (also used as site frontage)
-    - lot_length_ft: Length of the lot in feet
-    - existing_floor_area_sqft: Floor area of existing structures in square feet
-    - main_house_separation_ft: Separation between the main house and laneway house in feet (fixed at 16ft)
-
-    Returns:
-    A dictionary containing the GFA under each criterion and the limiting factor.
-    """
-    # Convert site frontage to feet (in this case, it's the same as lot width)
-    site_frontage_ft = lot_width_ft  # Since lot width = site frontage
-
-    # Calculate the lot area in square feet
-    lot_area_sqft = lot_width_ft * lot_length_ft
-
-    # Calculate the GFA under each of the four criteria
-    gfa_setbacks = (
-        lot_area_sqft
-        - (main_house_separation_ft * lot_width_ft)
-        - (site_frontage_ft * 10.7)
-    )  # Deduct the rear yard depth, assuming 10.7ft is the depth to be deducted
-    gfa_site_coverage = lot_area_sqft * 0.50  # 50% site coverage
-    gfa_186sqm = 2002  # GFA of 186 sqm in square feet
-    gfa_25percent_lot = lot_area_sqft * 0.25
-
-    # Determine the limiting criterion
-    gfa_values = {
-        "setbacks": gfa_setbacks,
-        "site_coverage": gfa_site_coverage,
-        "gfa_186sqm": gfa_186sqm,
-        "gfa_25percent_lot": gfa_25percent_lot,
-    }
-    limiting_criterion = min(gfa_values, key=gfa_values.get)
-    limiting_gfa = gfa_values[limiting_criterion]
-
-    # Create a result dictionary
-    result = {
-        "gfa_criteria": gfa_values,
-        "limiting_criterion": limiting_criterion,
-        "limiting_gfa": limiting_gfa,
-    }
-    return result
-
-
-def get_user_input():
-    """
-    Prompts the user for input and returns it as a dictionary.
-    """
-    inputs = {}
-    inputs["lot_width_ft"] = float(input("Enter lot width/site frontage in feet: "))
-    inputs["lot_length_ft"] = float(input("Enter lot length in feet: "))
-    inputs["existing_floor_area_sqft"] = float(
-        input("Enter the floor area of existing structures in square feet: ")
-    )
-
-    # Since main house separation is fixed, it's not requested from the user
-    # inputs['main_house_separation_ft'] = 16 is predefined in the function parameters
-
-    return inputs
-
-
-def main():
-    # Get user input
-    user_inputs = get_user_input()
-
-    # Calculate the GFA with the user input
-    gfa_results = calculate_gfa_criteria(**user_inputs)
-
-    # Output the GFA under each criterion
-    print("\nGross Floor Area (GFA) by criteria:")
-    for criterion, gfa in gfa_results["gfa_criteria"].items():
-        limiting_factor_note = (
-            " <-- Limiting factor"
-            if criterion == gfa_results["limiting_criterion"]
-            else ""
-        )
-        print(f"{criterion}: {gfa} sqft{limiting_factor_note}")
-
-    # Provide a descriptive note for the user
-    print(
-        f"\nThe limiting factor for GFA is the '{gfa_results['limiting_criterion']}' criterion, which allows for a maximum of {gfa_results['limiting_gfa']} sqft."
-    )
-
-
 for child in mainframe.winfo_children():
     child.grid_configure(padx=5, pady=5)
 width_entry.focus()
-window.bind("<Return>", calculate_gfa_criteria)
+window.bind("<Return>", calculate)
 
 window.mainloop()
