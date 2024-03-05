@@ -21,13 +21,13 @@ def calculate():
         gfa_setback.set(
             format(
                 (lot_area - (house_seperation * lot_width_calc) - (frontage * 10.7)),
-                ".1f",
+                ".2f",
             )
             + " Ft²"
         )
-        gfa_site_coverage.set(str(lot_area * 0.5) + " Ft²")
+        gfa_site_coverage.set(format((lot_area * 0.5), ".2f") + " Ft²")
         gfa_186sqm.set(str(2002) + " Ft²")
-        gfa_25percent.set(str(lot_area * 0.25) + " Ft²")
+        gfa_25percent.set(format((lot_area * 0.25), ".2f") + " Ft²")
         
         gfa_values = {
             "Setbacks": str(gfa_setback.get()),
@@ -98,7 +98,7 @@ gfa_25percent = StringVar()
 ttk.Label(mainframe, textvariable=gfa_25percent).grid(column=2, row=8, sticky=(W, E))
 
 gfa_results = StringVar()
-ttk.Label(mainframe, textvariable=gfa_results).grid(column=1, row=10, sticky=(W, E))
+ttk.Label(mainframe, textvariable=gfa_results).grid(column=1, row=10, columnspan=2, sticky=(W, E))
 
 # ----------------------------------------------------------------
 
@@ -126,6 +126,6 @@ ttk.Button(mainframe, text="Calculate", command=calculate).grid(
 for child in mainframe.winfo_children():
     child.grid_configure(padx=5, pady=5)
 width_entry.focus()
-window.bind("<Return>", calculate)
+window.bind("<Return>", calculate())
 
 window.mainloop()
