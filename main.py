@@ -2,7 +2,7 @@ from tkinter import *
 from tkinter import ttk
 
 
-def calculate(*args):
+def calculate():
     house_seperation = 16
 
     try:
@@ -28,6 +28,16 @@ def calculate(*args):
         gfa_site_coverage.set(str(lot_area * 0.5) + " Ft²")
         gfa_186sqm.set(str(2002) + " Ft²")
         gfa_25percent.set(str(lot_area * 0.25) + " Ft²")
+        
+        gfa_values = {
+            "Setbacks": str(gfa_setback.get()),
+            "Site Coverage": str(gfa_site_coverage.get()),
+            "186m² GFA": str(gfa_186sqm.get()),
+            "25% GFA": str(gfa_25percent.get()),
+        }
+        limiting_criterion = min(gfa_values, key=gfa_values.get)
+        limiting_gfa = str(gfa_values[limiting_criterion])
+        gfa_results.set("\nThe limiting factor for GFA is the " + limiting_criterion + " criterion,\n which allows for a maximum of " + str(limiting_gfa) + " sqft.")
 
     except ValueError:
         pass
@@ -86,6 +96,9 @@ ttk.Label(mainframe, textvariable=gfa_25percent_label).grid(
 
 gfa_25percent = StringVar()
 ttk.Label(mainframe, textvariable=gfa_25percent).grid(column=2, row=8, sticky=(W, E))
+
+gfa_results = StringVar()
+ttk.Label(mainframe, textvariable=gfa_results).grid(column=1, row=10, sticky=(W, E))
 
 # ----------------------------------------------------------------
 
@@ -203,7 +216,7 @@ def main():
 
 for child in mainframe.winfo_children():
     child.grid_configure(padx=5, pady=5)
-# number_entry.focus()
+width_entry.focus()
 window.bind("<Return>", calculate_gfa_criteria)
 
 window.mainloop()
