@@ -2,7 +2,7 @@ from tkinter import *
 from tkinter import ttk
 
 
-def calculate():
+def calculate(event):
     house_seperation = 16
 
     try:
@@ -126,6 +126,6 @@ ttk.Button(mainframe, text="Calculate", command=calculate).grid(
 for child in mainframe.winfo_children():
     child.grid_configure(padx=5, pady=5)
 width_entry.focus()
-window.bind("<Return>", calculate())
+window.bind("<Return>", calculate)
 
 window.mainloop()
