@@ -1,2 +1,4 @@
 # Paste into zsh terminal
-echo -n 'export PATH+=/Library/Python/3.8/bin' >> ~/.zshrc
+echo -n 'export PATH+=/Users/jimmyrashid/Library/Python/3.8/bin' >> ~/.zshrc
+
+python3 -m pyinstaller --onefile --windowed --icon=favicon.icns main.py 

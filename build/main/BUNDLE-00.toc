@@ -1,0 +1,3 @@
+([('main',
+   '/Users/jimmyrashid/Documents/GitHub/Laneway-Size/dist/main',
+   'EXECUTABLE')],)
