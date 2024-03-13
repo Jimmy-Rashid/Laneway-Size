@@ -1,0 +1,2 @@
+# Paste into zsh terminal
+echo -n 'export PATH+=/Library/Python/3.8/bin' >> ~/.zshrc
